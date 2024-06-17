@@ -36,6 +36,7 @@ You should have following files:
 You can also create the files manually.
 
 ## Provision infrastructure (GitHub)
+
 First, you should fork this repository to your account.
 
 Then, you should go to **GitHub -> Your fork repo -> Settings -> Secrets and variables** and create two repository secrets:
@@ -43,6 +44,13 @@ Then, you should go to **GitHub -> Your fork repo -> Settings -> Secrets and var
 * BACKEND_EMEA_TEST_AWS_SECRET
 
 and set accordingly `ACCESS_KEY_ID` and `SECRET_ACCESS_KEY`, same as locally in `..\.aws\credentials`.
+
+
+Then, you should go to `wrapper.properties` and set `UNIQUE_BUCKET_STRING` to your custom, **unique** string, that will be added as a suffix to your state bucket name. You can edit the file directly in Github or clone it to yor local machine, change and push the changes back to Github.
+
+> **NOTE**  
+> It is important to come up with a unique value, as this will affect the name of the Terraform state bucket that will be created, thus it must be unique globally. Please also do not make it too long, e.g.: `daja819ad`
+
 
 Then, you should run **Provision with Terraform** pipeline under **Actions** tab. This will automatically provision AWS infrastructure. Choose **eks** as deployment type.
 
