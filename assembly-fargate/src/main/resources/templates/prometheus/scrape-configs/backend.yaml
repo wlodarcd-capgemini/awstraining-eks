@@ -1,0 +1,22 @@
+# ---
+  - job_name: backend
+    scrape_interval: 1m
+    scrape_timeout: 10s
+    metrics_path: /backend/status/v1/prometheus
+    honor_labels: true
+    scheme: http
+    file_sd_configs:
+      - files:
+        - /prometheus/discovered.yml
+        refresh_interval: 2m
+    relabel_configs:
+      - source_labels: [container_arn]
+        regex: '(.+)'
+        replacement: '$1'
+        target_label: arn
+        action: replace
+      - source_labels: [__address__]
+        regex: '(.+)'
+        replacement: '$1'
+        target_label: kubernetes_pod_name
+        action: replace

@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  db: person
+  host: person-db
+kind: ConfigMap
+metadata:
+  name: person-configmap

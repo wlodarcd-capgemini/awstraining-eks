@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: person-db
+  name: person-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: person-db
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: person-db
+    spec:
+      containers:
+        - name: postgres
+          image: docker.io/postgres:16
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: POSTGRES_DB
+              value: person
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_USER
+              value: postgres
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: pgdata
+      volumes:
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: person-pvc

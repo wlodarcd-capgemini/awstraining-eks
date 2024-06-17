@@ -1,0 +1,15 @@
+{
+  "TableName": "Measurements",
+  "KeySchema": [
+    { "AttributeName": "deviceId", "KeyType": "HASH" },
+    { "AttributeName": "creationTime", "KeyType": "RANGE" }
+  ],
+  "AttributeDefinitions": [
+    { "AttributeName": "deviceId", "AttributeType": "S" },
+    { "AttributeName": "creationTime", "AttributeType": "N" }
+  ],
+  "ProvisionedThroughput": {
+    "ReadCapacityUnits": 10,
+    "WriteCapacityUnits": 5
+  }
+}

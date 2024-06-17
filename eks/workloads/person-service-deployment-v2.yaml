@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: person-service
+  name: person-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: person-service
+  template:
+    metadata:
+      labels:
+        app: person-service
+    spec:
+      containers:
+        - image: quay.io/ksobkowiak/eks-wks-person-service:latest
+          name: person-service
+          resources:
+            limits:
+              cpu: 200m
+              memory: 10Mi
+              #memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 5Mi
+              #memory: 256Mi            
+          env:
+            - name: DB_DB
+              valueFrom:
+                configMapKeyRef:
+                  key: db
+                  name: person-configmap
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: person-secret
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: person-secret
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: host
+                  name: person-configmap

@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: person-db
+spec:
+  template:
+    spec:
+      containers:
+      - name: postgres   
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data/pgdata      
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: pgdata
+      volumes:
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: person-pvc

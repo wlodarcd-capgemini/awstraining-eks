@@ -1,0 +1,400 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "description": "API for test backend application",
+    "version": "1.2.1",
+    "title": "Backend",
+    "contact": {
+      "name": "BackendApp",
+      "url": "https://backend.awstraining.com/confluence/display/BackendApp",
+      "email": "backend.team@awstraining.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "/backend/v1",
+      "description": "Test Backend Service"
+    }
+  ],
+  "tags": [
+    {
+      "name": "backend"
+    }
+  ],
+  "paths": {
+    "/{deviceId}": {
+      "get": {
+        "tags": [
+          "measurements"
+        ],
+        "summary": "Retrieves test measurements for device",
+        "description": "Retrieves test measurements for device",
+        "operationId": "retrieveMeasurements",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "description": "Device identification number",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Measurements"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiBusinessErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "Resource not available."
+          },
+          "422": {
+            "description": "Request timed out. One of the backend services took too long to process request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiBusinessErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests for same device.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiBusinessErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiServerErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiServerErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth":[]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "measurements"
+        ],
+        "summary": "Publishes test measurements for device",
+        "description": "Publishes test measurements for device",
+        "operationId": "publishMeasurements",
+        "parameters": [
+          {
+            "name": "deviceId",
+            "in": "path",
+            "required": true,
+            "description": "Device identification number",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Measurement published.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Measurement"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiBusinessErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden."
+          },
+          "404": {
+            "description": "Resource not available."
+          },
+          "422": {
+            "description": "Request timed out. One of the backend services took too long to process request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiBusinessErrorResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests for same device.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiBusinessErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiServerErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiServerErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Measurement body",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Measurement"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth":[]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiBusinessErrorResponse": {
+        "type": "object",
+        "required": [
+          "logMessage",
+          "requestTimestamp",
+          "requestUrl",
+          "statusCode"
+        ],
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "example": 422,
+            "description": "HTTP status code"
+          },
+          "requestUrl": {
+            "type": "string",
+            "example": "https://backend-test-emea.aws.com/backend/status/v1/health",
+            "description": "url of the request"
+          },
+          "logMessage": {
+            "type": "string",
+            "example": "Create failed - Another User with this QNumber already exists",
+            "description": "log message of the request"
+          },
+          "requestTimestamp": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1496132235000,
+            "description": "timestamp the error happened"
+          }
+        },
+        "description": "Object holding information about business errors (HTTP code 422)."
+      },
+      "ApiClientErrorResponse": {
+        "type": "object",
+        "required": [
+          "parameterErrors",
+          "requestTimestamp",
+          "requestUrl",
+          "statusCode"
+        ],
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "example": 400,
+            "description": "HTTP status code"
+          },
+          "requestUrl": {
+            "type": "string",
+            "example": "https://backend-test-emea.aws.com/backend/status/v1/health",
+            "description": "url of the request"
+          },
+          "requestTimestamp": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1496132235000,
+            "description": "timestamp the error happened"
+          },
+          "parameterErrors": {
+            "type": "array",
+            "description": "list of erroneous params",
+            "items": {
+              "$ref": "#/components/schemas/ParameterError"
+            }
+          }
+        },
+        "description": "Object holding information about client errors (HTTP code 400)."
+      },
+      "ApiServerErrorResponse": {
+        "type": "object",
+        "required": [
+          "requestTimestamp",
+          "requestUrl",
+          "statusCode"
+        ],
+        "properties": {
+          "statusCode": {
+            "type": "integer",
+            "format": "int32",
+            "example": 500,
+            "description": "HTTP status code"
+          },
+          "requestUrl": {
+            "type": "string",
+            "example": "https://backend-test-emea.aws.com/backend/status/v1/health",
+            "description": "url of the request"
+          },
+          "requestTimestamp": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1496132235000,
+            "description": "timestamp the error happened"
+          }
+        },
+        "description": "Object holding information about internal server errors (HTTP code 500)."
+      },
+      "ParameterError": {
+        "type": "object",
+        "required": [
+          "message",
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "payload",
+            "description": "param name"
+          },
+          "message": {
+            "type": "string",
+            "example": "Ping payload must be 1-20 characters long",
+            "description": "param error message"
+          }
+        },
+        "description": "param name and error message"
+      },
+      "EmptyRequestBody": {
+        "type": "object",
+        "properties": {}
+      },
+      "Measurements": {
+        "type": "object",
+        "properties": {
+          "measurements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Measurement"
+            }
+          }
+        }
+      },
+      "Measurement": {
+        "type": "object",
+        "description": "Represents the measurement for the given device",
+        "required": [
+          "timestamp",
+          "value",
+          "type"
+        ],
+        "properties": {
+          "timestamp": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1496132235000,
+            "description": "Contains the timestamp when the measurement was taken"
+          },
+          "value": {
+            "type": "number",
+            "format": "double",
+            "example": 80.12,
+            "description": "Contains the value of the taken measurement"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the given measurement",
+            "example": "cpu"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "basicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

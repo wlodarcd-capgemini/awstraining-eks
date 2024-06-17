@@ -1,0 +1,6 @@
+{
+  "cluster": "backend-ecs-test",
+  "serviceName": "backend-service-test",
+  "taskDefinition": "backend-task-test",
+  "launchType": "FARGATE",
+}

@@ -1,0 +1,24 @@
+{
+  "cluster": "backend-ecs-test",
+  "serviceName": "backend-service-test",
+  "taskDefinition": "backend-task-test",
+  "launchType": "FARGATE",
+  "platformVersion": "LATEST",
+  "desiredCount": 2,
+  "deploymentConfiguration": {
+    "maximumPercent": 200,
+    "minimumHealthyPercent": 75
+  },
+  "healthCheckGracePeriodSeconds": 30,
+  "networkConfiguration": {
+    "awsvpcConfiguration": {
+      "subnets": [
+        "<<TODO: configure subnets>>"
+      ],
+      "securityGroups": [
+        "<<TODO: set security groups>>"
+      ],
+      "assignPublicIp": "DISABLED"
+    }
+  }
+}

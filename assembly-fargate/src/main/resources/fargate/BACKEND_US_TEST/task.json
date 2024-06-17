@@ -1,0 +1,65 @@
+{
+  "family": "backend-task-test",
+  "executionRoleArn": "arn:aws:iam::<<ACCOUNT_ID>>:role/backend-ecs-execution-role-us-east-1",
+  "containerDefinitions": [
+    {
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/backend",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "entryPoint": ["sh", "-c", "/backend/run.sh"],
+      "workingDirectory": "/backend",
+      "portMappings": [
+        {
+          "hostPort": 8081,
+          "protocol": "tcp",
+          "containerPort": 8081
+        }
+      ],
+      "environment": [
+        {
+          "name": "HUB",
+          "value": "EMEA"
+        },
+        {
+          "name": "INITIAL_START",
+          "value": "true"
+        },
+        {
+          "name": "REGION",
+          "value": "us-east-1"
+        },
+        {
+          "name": "STAGE",
+          "value": "TEST"
+        }
+      ],
+      "secrets": [
+        {
+          "valueFrom": "<<TODO: set ARN of US secrets manager>>",
+          "name": "SPRING_APPLICATION_JSON"
+        }
+      ],
+      "cpu": 1024,
+      "memory": 2048,
+      "memoryReservation": 1024,
+      "image": "<<ACCOUNT_ID>>.dkr.ecr.us-east-1.amazonaws.com/backend:latest",
+      "dockerLabels": {
+        "PROMETHEUS_EXPORTER_PORT": "8081",
+        "PROMETHEUS_EXPORTER_PATH": "/backend/status/v1/prometheus",
+        "application": "backend",
+        "PROMETHEUS_EXPORTER_JOB_NAME": "backend"
+      },
+      "name": "backend"
+    }
+  ],
+  "taskRoleArn": "<<TODO: set task role ARN>>",
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "memory": "2048",
+  "cpu": "1024"
+}

@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 1m
+  scrape_timeout: 10s
+  evaluation_interval: 1m
+  external_labels:
+    ENV: {{ environment|lower }}_{{ region }}
+    HUB: {{ hub|lower }}
+scrape_configs:
+{% for item in prometheus.scrapeConfigs %}
+  {% include item %}
+{% endfor %}
+rule_files:
+{% for item in prometheus.alertRules %}
+  - /prometheus/rules/{{ item }}
+{% endfor %}
+alerting:
+  alertmanagers:
+    - timeout: 10s
+      api_version: v1
+      scheme: https
+      static_configs:
+        - targets:
+          - '{{ prometheus.alertmanagerUrl }}'

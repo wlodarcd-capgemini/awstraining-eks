@@ -1,0 +1,22 @@
+{
+  "Measurements": [
+    {
+      "PutRequest": {
+        "Item": {
+          "deviceId": {
+            "S": "test"
+          },
+          "creationTime": {
+            "N": "1710146481"
+          },
+          "type": {
+            "S": "cpu"
+          },
+          "value": {
+            "N": "52.59"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "ecs:ListContainerInstances",
+        "ecs:ListTaskDefinitions",
+        "ecs:ListTasks",
+        "ecs:ListClusters",
+        "ecs:ListServices",
+        "ecs:ListAttributes",
+        "ecs:ListTaskDefinitionFamilies",
+        "ecs:ListTagsForResource",
+        "ecs:ListAccountSettings",
+        "ecs:DescribeTasks",
+        "ecs:DescribeClusters",
+        "ecs:DescribeServices",
+        "ecs:DescribeContainerInstances",
+        "ecs:DescribeTaskSets",
+        "ecs:DescribeTaskDefinition",
+        "logs:FilterLogEvents",
+        "cloudwatchlogs:DescribeLogGroups"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}

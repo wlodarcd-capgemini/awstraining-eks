@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="com.bmw.cd.logging,com.bmw.cc.conn.vup">
+
+    <Properties>
+        <Property name="appID">Backend</Property>
+        <Property name="hub">US</Property>
+        <Property name="environment">TEST</Property>
+        <Property name="logLevel">${sys:logLevel:-INFO}</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="${logLevel}">
+            <AppenderRef ref="Console" />
+        </Root>
+    </Loggers>
+
+</Configuration>

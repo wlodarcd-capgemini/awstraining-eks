@@ -1,0 +1,5 @@
+hub: NONE
+environment: CI
+region: local
+
+profile: NONE-CI

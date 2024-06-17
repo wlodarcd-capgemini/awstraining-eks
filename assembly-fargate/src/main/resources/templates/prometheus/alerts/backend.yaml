@@ -1,0 +1,14 @@
+groups:
+  - name: backend_infrastructure
+    interval: 30s
+    rules:
+      - alert: backend_available
+        expr: sum (up{container_name="backend"}) < 1
+        for: 5m
+        labels:
+          priority: "MEDIUM"
+          event_id: 80303
+        annotations:
+          sub_source: "{{ $labels.arn }}"
+          summary: "#MGU#:BACKEND:{{ $externalLabels.HUB }}:{{ $externalLabels.ENV }}: Backend container all down"
+          description: "[ErrorCode: BACKEND1000 / ResolveID: XXXXXXXX] Only {{ $value }} Backend containers seem to be unavailable"
