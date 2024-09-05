@@ -32,7 +32,7 @@ You can also try to test the application by opening it in a browser using the in
 Please scale down the application deployment to 0, wait until the pod is terminated and scale it to 1 replica again
 
 ```
-kubectrollout restart deployment person-service
+kubect rollout restart deployment person-service
 ```
 
 Observe the result in the test container
@@ -107,7 +107,7 @@ kubectl apply -f person-service-deployment-v3.yaml
 Wait until the pod is up and running. Repeat the same procedure with rollout restart as above.
 
 ```
-kubectrollout restart deployment person-service
+kubect rollout restart deployment person-service
 ```
 
 After you have configured the Readiness Probe, Kubernetes has a mechanism to check whether the application inside the container is ready. The status of the container starts to be ready when the Readiness Probe decides that the application in the container is ready. Kubernetes even doesn't try to send the request to the container as long as the application is not ready.
