@@ -32,13 +32,23 @@ You can also try to test the application by opening it in a browser using the in
 Please scale down the application deployment to 0, wait until the pod is terminated and scale it to 1 replica again
 
 ```
-kubectl scale deployment person-service --replicas 0
-kubectl scale deployment person-service --replicas 1
+kubectrollout restart deployment person-service
 ```
 
 Observe the result in the test container
 
 ```
+curl: (7) Failed to connect to person-service port 8080: Connection refused
+This is the default greeting from application.properties
+curl: (7) Failed to connect to person-service port 8080: Connection refused
+curl: (7) Failed to connect to person-service port 8080: Connection refused
+This is the default greeting from application.properties
+curl: (7) Failed to connect to person-service port 8080: Connection refused
+This is the default greeting from application.properties
+curl: (7) Failed to connect to person-service port 8080: Connection refused
+curl: (7) Failed to connect to person-service port 8080: Connection refused
+curl: (7) Failed to connect to person-service port 8080: Connection refused
+curl: (7) Failed to connect to person-service port 8080: Connection refused
 curl: (7) Failed to connect to person-service port 8080: Connection refused
 curl: (7) Failed to connect to person-service port 8080: Connection refused
 curl: (7) Failed to connect to person-service port 8080: Connection refused
@@ -51,12 +61,13 @@ Please check the status of the pods
 kubectl get pods
 ```
 ```
-NAME                              READY   STATUS    RESTARTS   AGE
-person-db-6b7bcc8d4b-7x5fj        1/1     Running   0          70m
-person-service-77f7c6d87b-rw5wm   1/1     Running   0          26s
+NAME                              READY   STATUS        RESTARTS   AGE
+person-db-6b7bcc8d4b-7x5fj        1/1     Running       0          70m
+person-service-6dd8488f7d-gtq7x   1/1     Terminating   0          26s
+person-service-866bc45fc8-7lz2c   1/1     Running       0          2s
 ```
 
-Altough the pod is ready (`1/1`in `READY`column) you can still see `Connection refused` error in the test container terminal. After about 50s you should see again the successful connection in the test container. 
+Altough the pod is ready (`1/1`in `READY`column) you can still see `Connection refused` error in the test container terminal. After some time you should see again the successful connection in the test container. 
 
 After the container starts and is ready Kubernetes starts to send incomming requests into this container. But The application within the container still needs some time until it initializes and is ready to process the requests. Kubernetes doesn't know about this and starts to send the requests to the container. It results with connection refused error.
 
@@ -83,7 +94,7 @@ curl: (7) Failed to connect to person-service port 8080: Connection refused
 
 This happens, because the new pods are ready but the application still starts in the container and is not ready to process the requests. After some time you should see only successful responses from the application. 
 
-Please scale down the application to 0 replicas.
+Please scale down the application to 1 replicas.
 
 ## Configure the Readiness Probe
 
@@ -93,13 +104,17 @@ Please review the file `person-service-deployment-v3.yaml` and apply it.
 kubectl apply -f person-service-deployment-v3.yaml
 ```
 
-Scale the application to 1 replica. Observe the result from the test container and check the status of the pods. You can see the `Connection refused` error, but as soon as the new container is ready, you observe the successful responses from the application. You can also observe that it takes more time until the container starts to be ready.
+Wait until the pod is up and running. Repeat the same procedure with rollout restart as above.
+
+```
+kubectrollout restart deployment person-service
+```
 
 After you have configured the Readiness Probe, Kubernetes has a mechanism to check whether the application inside the container is ready. The status of the container starts to be ready when the Readiness Probe decides that the application in the container is ready. Kubernetes even doesn't try to send the request to the container as long as the application is not ready.
 
 Please scale the application to 3 replicas. You will not observe the `Connection refused` in this time, because as long as the application is not ready in the new pods, Kubernetes sends the requests only to the first container which is ready. As soon as the new pods are ready Kubernetes starts to send requests to the new pods too.
 
-Scale the application to 0 replicas.
+Scale the application to 1 replicas.
 
 ## (Optional) Check the failure of the Readiness Probe
 
