@@ -8,7 +8,7 @@ kubectl apply -f person-service-deployment-v2.yaml
 ```
 When you list the pods (try to repeat the command below more times) you can see the application pod is in status `OOMKilled`
 ```
-kubectl get pods
+kubectl get pods -w
 ```
 ```
 NAME                              READY   STATUS      RESTARTS     AGE
